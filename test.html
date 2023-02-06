@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div onclick="handleMenu('satu')">MENU1</div>
+    <div onclick="handleMenu('dua')">MENU2</div>
+    <div onclick="handleMenu('tiga')">MENU3</div>
+
+    <hr />
+
+    <div class="item" id="menu1">Isi1</div>
+    <div class="item hidden">Isi2</div>
+    <div class="item hidden">Isi3</div>
+
+    <script>
+        function handleMenu(mutadi) {
+            console.log(mutadi);
+            const elBaru = document.querySelectorAll(".item");
+            console.log(elBaru);
+
+            if (mutadi === "satu") {
+                //untuk menu 1
+                elBaru.forEach((elemen, index) => {
+                    if (index != 0) {
+                         elemen.classList.add("hidden");
+                    } else {
+                        elemen.classList.remove("hidden");
+                    }
+                });
+            } else if (mutadi === "dua") {
+                elBaru.forEach((elemen, index) => {
+                    if (index != 1) {
+                         elemen.classList.add("hidden");
+                    } else {
+                        elemen.classList.remove("hidden");
+                    }
+                });
+                //untuk menu 2
+            } else {
+                elBaru.forEach((elemen, index) => {
+                    if (index != 2) {
+                         elemen.classList.add("hidden");
+                    } else {
+                        elemen.classList.remove("hidden");
+                    }
+                });
+                //untuk menu 3
+            }
+            
+        }
+        
+        // const elemenMenu1 = document.getElementById("menu1");
+
+            // elemenMenu1.style.color = "red";
+            // elemenMenu1.style.backgroundColor = "green";
+            // return console.log(elemenMenu1);
+
+    </script>
+
+</body>
+</html>
