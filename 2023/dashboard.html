@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dasboard</title>
+    <link rel="stylesheet" href=".assets/style.css">
+</head>
+<body>
+    <div class="d-wrapper">
+        <div>
+            <img 
+            width="100"
+            height="100"
+            src="./assets/images/rumah.png" 
+            alt="rumah" />
+        </div>
+        <div class="right">
+            <h1 class="title">PEDULI DIRI</h1>
+            <h3 class="sub-title">Catatan Perjalanan</h3>
+            <ul class="menu-wrapper">
+                <li class="menu-item" onclick="handleMenu('satu')">Home</li>
+                <li class="menu-item" onclick="handleMenu('dua')">Catatan Perjalanan</li>
+                <li class="menu-item" onclick="handleMenu('tiga')">Isi Data</li>
+            </ul>
+
+            <div class="item-id hidden jumbotron-wrapper" id="menu1" >
+                <div class="jumbotron">
+                    <p class="description">Selamat Datang <span id="nama_lengkap"></span> di Aplikasi Peduli Diri</p>
+                </div>
+                <button class="btn">Isi Catatan</button>
+            </div>
+            <div class="item-id table-wrapper">
+                <div class="table-header">
+                    <span class="table-header-text">Urutkan Berdasarkan</span>
+                    <select class="table-header-select">
+                        <option value="">Tanggal</option>
+                        <option value="">Waktu</option>
+                        <option selected value="">Lokasi</option>
+                        <option value="">Suhu Tubuh</option>
+                    </select>
+                    <button class="button">Urutkan</button>
+                </div>
+                <div class="table-body">
+                    <table id="dataFromApi">
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Waktu</th>
+                            <th>Lokasi</th>
+                            <th>Suhu Tubuh</th>
+                        </tr>
+                        <!-- <tr>
+                            <td>10-10-2010</td>
+                            <td>09:30</td>
+                            <td>Cimahi</td>
+                            <td>50Deg</td>
+                        </tr>
+                        <tr>
+                            <td>10-10-2010</td>
+                            <td>09:30</td>
+                            <td>Cimahi</td>
+                            <td>50Deg</td>
+                        </tr>
+                        <tr>
+                            <td>10-10-2010</td>
+                            <td>09:30</td>
+                            <td>Cimahi</td>
+                            <td>50Deg</td>
+                        </tr> -->
+                    </table>
+                    <button class="button btn-table">Isi Catatan Perjalanan</button>
+                </div>
+            </div>
+            <div class="item-id hidden jumbotron-wrapper">
+                <div class="jumbotron center-content">
+                    <div class="dashboard-form-wrapper">
+                        <span>Tanggal</span>
+                        <input class="d-form-input" type="date" name="" id="" />
+                    </div> 
+                    <div class="dashboard-form-wrapper">
+                        <span>Waktu</span>
+                        <input class="d-form-input" type="time" name="" id="" />
+                    </div> 
+                    <div class="dashboard-form-wrapper">
+                        <span>Lokasi</span>
+                        <input class="d-form-input" type="text" name="" id="" />
+                    </div> 
+                    <div class="dashboard-form-wrapper">
+                        <span>Suhu Tubuh</span>
+                        <input class="d-form-input" type="text" name="" id="" />
+                    </div> 
+                    <div class="dashboard-form-wrapper button-d-form">
+                    <button class="button btn-table">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <script>
+            function handleMenu(mutadi) {
+                console.log(mutadi);
+                const elBaru = document.querySelectorAll(".item-id");
+                console.log(elBaru);
+    
+                if (mutadi === "satu") {
+                    //untuk menu 1
+                    elBaru.forEach((elemen, index) => {
+                        if (index != 0) {
+                             elemen.classList.add("hidden");
+                        } else {
+                            elemen.classList.remove("hidden");
+                        }
+                    });
+            } else if (mutadi === "dua") {
+                elBaru.forEach((elemen, index) => {
+                    if (index != 1) {
+                         elemen.classList.add("hidden");
+                    } else {
+                        elemen.classList.remove("hidden");
+                    }
+                });
+ //untuk menu 2
+} else {
+                elBaru.forEach((elemen, index) => {
+                    if (index != 2) {
+                         elemen.classList.add("hidden");
+                    } else {
+                        elemen.classList.remove("hidden");
+                    }
+                });
+                 //untuk menu 3
+            }
+            
+        }
+        
+        // const elemenMenu1 = document.getElementById("menu1");
+
+            // elemenMenu1.style.color = "red";
+            // elemenMenu1.style.backgroundColor = "green";
+            // return console.log(elemenMenu1);
+
+    </script>
+
+    <script>
+        // const dataFromApl = fetch("https://jsonplaceholder.typicode.com/users");
+        // setTimeout(() => {
+        //     const response = dataFromApl.json();
+        //     console.log(response);
+        // }
+        async function getDataFromApi(url) {
+            const dataFromApi = await fetch(url);
+            let data = await dataFromApi.json();
+            console.log(data);
+       
+            let dataApi = "";
+            data.forEach((element) => {
+                dataApi += `
+                <tr>
+                    <td>${element.id}</td>
+                    <td>${element.name}</td>
+                    <td>${element.username}</td>
+                    <td>${element.email}</td>
+                </tr>
+                `
+                console.log(element.email);
+            });
+            const elemenTable = document.getElementById("dataFromApi");
+            elemenTable.innerHTML += dataApi;
+
+        }
+
+        getDataFromApi("https://jsonplaceholder.typicode.com/users");
+         // setTimeout(() => {
+
+        //     elemenTable.innerHTML = "<table> "
+        // }
+        // )
+
+        function getNamalengkap() {
+            const nama = localStorage.getItem("")
+            if(nama) {
+                document.getElementById("nama_lengkap").innerHTML = nama
+            }
+         }
+         getNamalengkap();
+
+    </script>
+
+    <!-- <script>
+        console.log("Hello javascript");
+
+        //variable
+        // let nama = "Budi";
+        // var umur = 20;
+        // const alamat = "Legok";
+
+        // nama =" Mandra"
+
+        // console.log(nama);  //memanggil atau menampilkan data
+        // console.log(umur);
+        // console.log(alamat);
+        // let x = 10;
+        // if (x > 7) {
+        //     console.log("Lulus");
+        // } else if (x > 9) {
+        //     console.log("sudah Lulus");
+        // } else {
+        //     console.log("Tidak Lulus");
+        // }
+
+
+        // let x = 101;
+        // if (x >= 0 && x < 51) {
+        //     console.log("C");
+        // } else if (x > 50 && x < 76) {
+        //     console.log("B");
+        // } else if (x > 75 && x < 101) {
+        //     console.log("A");
+        // } else {
+        //     console.log("Tidak ada");
+        // }
+
+        // let Nina = "Haus";
+        // switch (Nina) {
+        //     case "Haus":
+        //         console.log("Minum");
+                     break;
+        //     case "Lapar":
+        //         console.log("Makan");
+        //         break; 
+        //     case "Rajin":
+        //         console.log("Belajar");
+        //         break;
+        //     case "Rajin":
+        //         console.log("Belajar");
+        //         break;
+        //     default:
+        //         console.log("Bobo");
+        //         break;
+        // }
+
+        //Saya belajar sebanyak %kali
+
+        
+        // console.log("1. Saya Rajin");
+        // console.log("2. Saya Rajin");
+        // console.log("3. Saya Rajin");
+        // console.log("4. Saya Rajin");
+        // console.log("5. Saya Rajin");
+         //for
+        for (let index = 0; index < 5; index++) {
+            if (index % 2 == 0) {
+                console.log(index + 1 +". Saya Belajar");
+            }
+            
+            
+        }
+        
+</script> -->
+    
+
+        
+</body>
+</html>
+
+    

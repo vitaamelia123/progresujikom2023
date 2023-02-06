@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tugas 1 </title>
+    <link rel="stylesheet" href="./assets/style.css">
+</head>
+<body class="body">
+    <div class="wrapper">
+        <form class="form-wrapper"> 
+        <input class= "input-form" type="number" name="nik" placeholder="nik" id="nik"/>
+        <input class="input-form" type="text" name="nama lengkap" placeholder="nama lengkap" id="nama_lengkap"/>
+
+        <div class="button-group">
+            <a class="button " onclick= "handleSubmit(event, 'daftar')">Saya Pengguna Baru</a>
+            <button class="button" onclick="handleSubmit(event, 'masuk')">masuk</button>
+    </div>
+    </form>
+
+    </div>
+
+    <script>
+        function checkLogin() {
+            if (localStorage.getItem("isioggeidin") !== null) {
+                 window.location.replace("/dashboard.html");
+            }
+        }
+        checkLogin();
+
+        async function handleSubmit(event, aksi) {
+            event.preventDefault();
+            console.log(aksi);
+            
+            const nik = document.getElementById("nik").value;
+            //
+            const nama_lengkap = document.getElementById("nama_lengkap").value;
+
+            //igic untuk cek jika data kosong
+            if (!nik || !nama_lengkap) {
+                return alert("Form Tidak Boleh Kosong");
+            }
+
+            if (nama_lengkap == "rias" ) {
+                return alert("Nama Terblokir");
+            }
+            //handle login
+
+            //POST// -> FORMDATA (method yang dipakai post)
+            let formData = new FormData();
+            formData.append('nik', nik);
+            formData.append('nama_lengkap', nama_lengkap);
+            if (aksi === 'daftar') {
+                formData.append("aksi", "daftar");
+                
+            } else {
+                formData.append("aksi", "login");
+                
+            }
+
+            let object = {};
+            formData.forEach((value, key) => (object[key] = value) )
+            let json = JSON.stringify(object); 
+            console.log(json);
+
+            if (aksi === 'daftar') {
+                //panggil api daftar
+                try {
+                    //panggil api
+                    const response = await fetch('http://localhost', {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application'
+                        },
+                        body: json,
+                    });
+                    let data = await response.json();
+                    console.log(data);
+                    if(data.status == "Berhasil Mendaftar") {
+                        alert("Berhasil Mendaftar");
+                        localStorage.setitem("isioggedin", data.nik);
+                        localStorage.setitem("isiNamaLengkap", data.nama_lengkap);
+                        window.location.replace("/dasboard.html");
+                    } else {
+                        alert("NIK Sudah Terdaftar");
+                    }
+                 } catch (error) {
+                    console.log(error);
+                }
+            }else{
+
+            } 
+                //panggil api login
+
+                try {
+                    const response = await fetch("http://localhost", {
+                        method: "post",
+                        header: {
+                            "content-Type": "application/json",
+                        },
+                        body: json,
+                    });
+                    let data = await response.json();
+                    console.log(data);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        
+              // if (nik === "123" && nama_lengkap === "egi") {
+            // //    alert("Login Berhasil"); 
+            //     localStorage.setItem("isioggedin", "admin");
+            //     window.location.replace("/dashboard.html");
+            // }else {
+            //     alert("Username atau Password Salah");
+            // }
+            // console.log("javascript terload", event);
+ </script>
+            
+           
+    
+</body>
+</html>
